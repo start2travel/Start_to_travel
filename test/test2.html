@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>JSON to Table (No Dependencies)</title>
+  
+  
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'>
+
+  
+  
+</head>
+
+<body>
+
+<?php
+//FUNCTION THAT :PARAMETER - KEYWORD , AND RETURNS WIKI DEFINITION (IN ARRAY FORMAT)
+function wikidefinition($s) {
+//ENGLISH WIKI
+    $url = "http://en.wikipedia.org/w/api.php?action=opensearch&search=".urlencode($s)."&format=xml&limit=1";
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_HTTPGET, TRUE);
+    curl_setopt($ch, CURLOPT_POST, FALSE);
+    curl_setopt($ch, CURLOPT_HEADER, false);
+    curl_setopt($ch, CURLOPT_NOBODY, FALSE);
+    curl_setopt($ch, CURLOPT_VERBOSE, FALSE);
+    curl_setopt($ch, CURLOPT_REFERER, "");
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+    curl_setopt($ch, CURLOPT_MAXREDIRS, 4);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 6.1; he; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8");
+
+    $page = curl_exec($ch);
+    $xml = simplexml_load_string($page);
+    if((string)$xml->Section->Item->Description) {
+        return array((string)$xml->Section->Item->Text, 
+                     (string)$xml->Section->Item->Description, 
+                     (string)$xml->Section->Item->Url);
+    } else {
+        return "";
+    }
+}
+//END OF FUNCTION WIKIDEFINITIONS
+
+
+//USE OF FUNCTION
+$data = wikidefinition('Bangladesh') ;
+//var_dump( wikidefinition('bangladesh') ) ; //displays the array content
+echo "Word:"       . $data[0] . "<br/>";
+echo "Definition:" . $data[1]  . "<br/>";
+echo "Link:"       . $data[2] . "<br/>";
+
+?>
+
+
+
+</body>
+
+</html>

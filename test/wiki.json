@@ -1,0 +1,6 @@
+[{ country: 'China',         population: 1379510000 },
+  { country: 'India',         population: 1330780000 },
+  { country: 'United States', population:  324788000 },
+  { country: 'Indonesia',     population:  260581000 },
+  { country: 'Brazil',        population:  206855000 },
+]
